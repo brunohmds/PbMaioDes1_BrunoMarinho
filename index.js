@@ -1,13 +1,11 @@
 const fs = require("fs")
-const readline = require('readline')
+const readline = require("readline")
 
 const bolas = [
     "verde",
     "azul", "azul",
     "amarelo", "amarelo", "amarelo",
     "vermelho", "vermelho", "vermelho", "vermelho", "vermelho"]
-
-const lista = []
 
 escolheBolinha(bolas)
 
@@ -19,24 +17,32 @@ function escolheBolinha(listaBolas){
         }
     })
 
+    // Validações
+    if(listaBolas.length === 0){
+        throw new Error("Lista vazia")
+    } 
     
+    if(listaBolas.length !== 11){
+        throw new Error("Lista com número de bolas equivocado")
+    }
+
+    verificaQuantidadeBolasPorCor(listaBolas)
     
+    // Escreve as linhas com as bolas sortidas no arquivo
     for(let i = 1; i <= 1000; i++){
         let linha = ""
         for (let j = 0; j < 4; j++){    
             let indice = Math.floor(Math.random() * listaBolas.length) // Obtém um número aleatório de 0 a 10
             linha = linha + listaBolas[indice] + ","
         }
-        // Adiciona conteúdo ao arquivo
         fs.appendFile("resultado.txt", linha.slice(0,-1) + "\n", function(error) {
             if (error) {
                 console.log(error)
             }
         })
     }
-
+    // Lê arquivo e exibe a quantidade de cada bola
     lerArquivoLinhaALinha("resultado.txt")
-    
 }
 
 function lerArquivoLinhaALinha(arquivo){
@@ -71,4 +77,26 @@ function lerArquivoLinhaALinha(arquivo){
         console.log("amarelo: " + contadorAmarelo)
         console.log("vermelho: " + contadorVermelho)
     })
+}
+
+function verificaQuantidadeBolasPorCor(listaBolas){
+    let quantidadePorCor = {};
+
+    for (let bola of listaBolas) {
+        if (quantidadePorCor[bola] === undefined) {
+            quantidadePorCor[bola] = 1;
+        } else {
+            quantidadePorCor[bola]++;
+        }
+    }
+        
+    if(quantidadePorCor["verde"] != 1){
+        throw new Error("Quantidade de bolas verdes incorreta")
+    } else if(quantidadePorCor["azul"] != 2){
+        throw new Error("Quantidade de bolas azuis incorreta")
+    } else if(quantidadePorCor["amarelo"] != 3){
+        throw new Error("Quantidade de bolas amarelas incorreta")
+    } else if(quantidadePorCor["vermelho"] != 5){
+        throw new Error("Quantidade de bolas vermelhas incorreta")
+    }
 }
