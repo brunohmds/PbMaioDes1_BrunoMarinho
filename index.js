@@ -6,37 +6,25 @@ const bolas = [
     "azul", "azul",
     "amarelo", "amarelo", "amarelo",
     "vermelho", "vermelho", "vermelho", "vermelho", "vermelho"]
-    
-fs.writeFile("resultado.txt", "", function(error) {
-    if (error) {
-        console.log(error)
-    }
-})
+
+const lista = []
 
 escolheBolinha(bolas)
 
 function escolheBolinha(listaBolas){
     // Cria o arquivo
+    fs.writeFile("resultado.txt", "", function(error) {
+        if (error) {
+            console.log(error)
+        }
+    })
+
     
-
-    let contadorVerde = 0
-    let contadorAzul = 0
-    let contadorAmarelo = 0
-    let contadorVermelho = 0
-
-    for(let i = 1; i <= 10; i++){
+    
+    for(let i = 1; i <= 1000; i++){
         let linha = ""
         for (let j = 0; j < 4; j++){    
             let indice = Math.floor(Math.random() * listaBolas.length) // Obtém um número aleatório de 0 a 10
-            /*if (listaBolas[indice] === "verde"){
-                contadorVerde++
-            } else if (listaBolas[indice] === "azul"){
-                contadorAzul++
-            } else if (listaBolas[indice] === "amarelo"){
-                contadorAmarelo++
-            } else if (listaBolas[indice] === "vermelho"){
-                contadorVermelho++
-            }*/
             linha = linha + listaBolas[indice] + ","
         }
         // Adiciona conteúdo ao arquivo
@@ -45,14 +33,6 @@ function escolheBolinha(listaBolas){
                 console.log(error)
             }
         })
-        
-         
-        
-    /*console.log("verde: " + contadorVerde)
-    console.log("azul: " + contadorAzul)
-    console.log("amarelo: " + contadorAmarelo)
-    console.log("vermelho: " + contadorVermelho)
-    */
     }
 
     lerArquivoLinhaALinha("resultado.txt")
@@ -60,12 +40,35 @@ function escolheBolinha(listaBolas){
 }
 
 function lerArquivoLinhaALinha(arquivo){
+    let contadorVerde = 0
+    let contadorAzul = 0
+    let contadorAmarelo = 0
+    let contadorVermelho = 0
+
     const linha = readline.createInterface({
         input: fs.createReadStream(arquivo),
-        crlfDelay: Infinity,
+        crlfDelay: false,
     })
       
     linha.on('line', (line) => {
-        console.log(line)
+        let listaAuxiliar = line.split(",")
+        for(let i = 0; i < listaAuxiliar.length; i++){
+            if (listaAuxiliar[i] === "verde"){
+                contadorVerde++
+            } else if (listaAuxiliar[i] === "azul"){
+                contadorAzul++
+            } else if (listaAuxiliar[i] === "amarelo"){
+                contadorAmarelo++
+            } else if (listaAuxiliar[i] === "vermelho"){
+                contadorVermelho++
+            }
+        }
+    })
+
+    linha.on('close', () => {
+        console.log("verde: " + contadorVerde)
+        console.log("azul: " + contadorAzul)
+        console.log("amarelo: " + contadorAmarelo)
+        console.log("vermelho: " + contadorVermelho)
     })
 }
