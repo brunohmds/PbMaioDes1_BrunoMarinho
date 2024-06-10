@@ -26,3 +26,6 @@ verde: 1
 azul: 2
 amarelo: 1
 vermelho: 4
+
+Execução:
+Para executar o programa, basta utilizar o comando 'node index.js' no terminal próprio do Node.JS, desde que esteja no diretório específico onde o arquivo está armazenado. Outra opção é executá-lo via terminal dentro do Visual Studio Code.
